@@ -2,6 +2,9 @@
 #include "Eigen/Dense"
 #include <iostream>
 
+// for well formed input
+#define SMALL_NUMBER 0.001
+
 using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -51,7 +54,7 @@ UKF::UKF() {
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
   // Start tuning at .8 m/s^2 corresponding to 0-20 mph in 5 sec
-  std_a_ = 2.5;
+  std_a_ = 3.5;
   
   // Process noise standard deviation yaw acceleration in rad/s^2
   // Start tuning at .4 rad/s^2 corresponding to Pi/2 rad/s in 2 sec
@@ -138,13 +141,13 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
       x_ << px_laser, py_laser, 0.0, 0.0, 0.0;
     }
 
-    // if(fabs(x_(0)) < SMALL_NUMBER) {
-    //   x_(0) = SMALL_NUMBER;
-    // }
+    if(fabs(x_(0)) < SMALL_NUMBER) {
+      x_(0) = SMALL_NUMBER;
+    }
 
-    // if(fabs(x_(1)) < SMALL_NUMBER) {
-    //   x_(1) = SMALL_NUMBER;
-    // }
+    if(fabs(x_(1)) < SMALL_NUMBER) {
+      x_(1) = SMALL_NUMBER;
+    }
 
     cout << "UKF Initialized: " << x_ << endl;
 
